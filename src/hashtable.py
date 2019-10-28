@@ -2,10 +2,10 @@
 # Linked List hash table key/value pair
 # '''
 class LinkedPair:
-    def __init__(self, key, value):
+    def __init__(self, key, value, next = None):
         self.key = key
         self.value = value
-        self.next = None
+        self.next = next
 
 class HashTable:
     '''
@@ -51,7 +51,11 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        hash = self._hash_mod(key)
+        if self.storage[hash] is not None:
+            self.storage[hash] = LinkedPair(key, value, self.storage[hash])
+        else:
+            self.storage[hash] = LinkedPair(key, value)
 
 
 
@@ -63,7 +67,16 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        hash = self._hash_mod(key)
+        if self.storage[hash].key is key:
+            self.storage[hash] = self.storage[hash].next
+        else:
+            current = self.storage[hash]
+            while current.next is not None:
+                if(current.next.key is key):
+                    current.next = current.next.next
+                current = current.next
+            print("key not found")
 
 
     def retrieve(self, key):
@@ -74,7 +87,13 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        hash = self._hash_mod(key)
+        current = storage[hash]
+        while current is not None:
+            if current.key is key:
+                return current.value
+            current = current.next
+        print("key not found")
 
 
     def resize(self):
@@ -84,9 +103,13 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
-
-
+        self.capacity = self.capacity*2
+        temp = self.storage
+        self.storage= [None] * self.capacity
+        for element in temp:
+            hash = self._hash_mod(element.key)
+            self.storage[hash] = element
+        
 
 if __name__ == "__main__":
     ht = HashTable(2)
