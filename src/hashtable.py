@@ -86,7 +86,7 @@ class HashTable:
         Fill this in.
         '''
         hash = self._hash_mod(key)
-        current = storage[hash]
+        current = self.storage[hash]
         while current is not None:
             if current.key is key:
                 return current.value
@@ -103,10 +103,12 @@ class HashTable:
         '''
         self.capacity = self.capacity*2
         temp = self.storage
-        self.storage= [None] * self.capacity
+        self.storage = [None] * self.capacity
         for element in temp:
-            hash = self._hash_mod(element.key)
-            self.storage[hash] = element
+            current = element
+            while current is not None:
+                self.insert(current.key, current.value)
+                current = current.next
         
 
 if __name__ == "__main__":
