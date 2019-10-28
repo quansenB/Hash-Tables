@@ -52,10 +52,7 @@ class HashTable:
         Fill this in.
         '''
         hash = self._hash_mod(key)
-        if self.storage[hash] is not None:
-            self.storage[hash] = LinkedPair(key, value, self.storage[hash])
-        else:
-            self.storage[hash] = LinkedPair(key, value)
+        self.storage[hash] = LinkedPair(key, value, self.storage[hash])
 
 
 
@@ -75,8 +72,9 @@ class HashTable:
             while current.next is not None:
                 if(current.next.key is key):
                     current.next = current.next.next
+                    return
                 current = current.next
-            print("key not found")
+        print("key not found")
 
 
     def retrieve(self, key):
